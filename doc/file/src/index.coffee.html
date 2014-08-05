@@ -35,19 +35,6 @@
           <td>src</td>
         </tr>
       </table>
-      <h2>Variables Summary</h2>
-      <dl class='constants'>
-  <dt id='module.exports.register.attributes-variable'>
-    module.exports.register.attributes
-    =
-  </dt>
-  <dd>
-    <pre><code class='coffeescript'>{
-  pkg: require(&#39;..&#47;package.json&#39;)
-}</code></pre>
-    
-  </dd>
-</dl>
       <h2>Method Summary</h2>
       <ul class='summary'>
   <li>
@@ -59,7 +46,10 @@
       </a>
     </span>
     <span class='desc'>
-      options: accountId: &#39;some mongodb guid&#39; or a function fn(request,cb) -&gt; cb null,accountId baseUrl: This is the url to your api. 
+      Main entry point for the plugin <p>@note
+When passing a function to the accountId the signature needs to be as follows:
+```coffeescript fnAccountId = (request,cb) -&gt;
+    accountId = null</p>
     </span>
   </li>
 </ul>
@@ -73,15 +63,89 @@
       <br>
     </p>
     <div class='docstring'>
-  <p>options: accountId: &#39;some mongodb guid&#39; or a function fn(request,cb) -&gt; cb null,accountId baseUrl: This is the url to your api. For example <a href="https://api.mystuff.com">https://api.mystuff.com</a> routesBaseName: defaults to &#39;roles&#39;</p>
+  <p>Main entry point for the plugin</p><p>@note
+When passing a function to the accountId the signature needs to be as follows:
+```coffeescript fnAccountId = (request,cb) -&gt;
+    accountId = null</p><pre><code># lookup accountId here ...
+cb null, accountId
+</code></pre><p>```</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>plugin</span>
+      <span class='type'>
+        (
+          <tt>Plugin</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>the HAPI plugin </span>
+    </li>
+    <li>
+      <span class='name'>options</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>the plugin options </span>
+    </li>
+    <li>
+      <span class='name'>cb</span>
+      <span class='type'>
+        (
+          <tt>Function</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>the callback invoked after completion </span>
+    </li>
+  </ul>
+  <h3>
+    Options Hash:
+    (options):
+  </h3>
+  <ul class='options'>
+    <li>
+      <span class='name'>accountId</span>
+      <span class='type'>
+        (
+          <tt>String|Function</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>the account id to use, or an async function. </span>
+    </li>
+    <li>
+      <span class='name'>baseUrl</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>the url to your API. For example <a href="https://api.mystuff.com">https://api.mystuff.com</a> </span>
+    </li>
+    <li>
+      <span class='name'>routesBaseName</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>the name of the endpoints, defaults to role </span>
+    </li>
+  </ul>
 </div>
   </div>
 </div>
     </div>
     <div id='footer'>
-  August 05, 14 09:52:41 by
+  August 05, 14 10:16:11 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

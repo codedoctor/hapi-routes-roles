@@ -11,7 +11,6 @@ module.exports = (plugin,options = {}) ->
   Hoek.assert options.baseUrl,i18n.optionsBaseUrlRequired
   Hoek.assert options.routesBaseName,i18n.optionsRoutesBaseNameRequired
 
-
   hapiIdentityStore = -> plugin.plugins['hapi-identity-store']
   Hoek.assert hapiIdentityStore(),i18n.couldNotFindPlugin
 

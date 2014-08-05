@@ -1,13 +1,30 @@
-Hoek = require 'hoek'
+###
+@author Martin Wawrusch (martin@wawrusch.com)
+###
 
+Hoek = require 'hoek'
 i18n = require './i18n'
 routes = require './routes'
 
 ###
-options:
-  accountId: 'some mongodb guid' or a function fn(request,cb) -> cb null,accountId
-  baseUrl: This is the url to your api. For example https://api.mystuff.com
-  routesBaseName: defaults to 'roles'
+Main entry point for the plugin
+
+@param [Plugin] plugin the HAPI plugin
+@param [Object] options the plugin options
+@option options [String|Function] accountId the account id to use, or an async function.
+@option options [String] baseUrl the url to your API. For example https://api.mystuff.com
+@option options [String] routesBaseName the name of the endpoints, defaults to role
+@param [Function] cb the callback invoked after completion
+
+@note
+When passing a function to the accountId the signature needs to be as follows:
+```coffeescript
+  fnAccountId = (request,cb) ->
+    accountId = null
+    # lookup accountId here ...
+    cb null, accountId
+
+```
 ###
 module.exports.register = (plugin, options = {}, cb) ->
 
@@ -21,6 +38,9 @@ module.exports.register = (plugin, options = {}, cb) ->
 
   cb()
 
+###
+@nodoc
+###
 module.exports.register.attributes =
   pkg: require '../package.json'
 
