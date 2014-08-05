@@ -2,7 +2,7 @@ _ = require 'underscore'
 
 module.exports =
 
-  role: (role,baseUrl) ->
+  role: (role,baseUrl,isInAdminScope) ->
     return null unless role
 
     res = 
@@ -10,8 +10,11 @@ module.exports =
       id : role._id
       name: role.name
       description: role.description
-    #accountId
-    #isInternal
+
+    if isInAdminScope
+      res.accountId = role.accountId
+      res.isInternal = role.isInternal
+
     res
 
 

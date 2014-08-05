@@ -57,10 +57,11 @@ module.exports = (plugin,options = {}) ->
 
         queryOptions = {}
 
-        if !fnIsInAdminScope(request)
+        isInAdminScope = fnIsInAdminScope(request)
+
+        unless isInAdminScope
           queryOptions.where =
             isInternal : false
-
 
         ###
         @TODO Options from query, sort, pagination
@@ -70,6 +71,8 @@ module.exports = (plugin,options = {}) ->
           return reply err if err
 
           baseUrl = fnRolesBaseUrl()
+
+          rolesResult.items = _.map(rolesResult.items, (x) -> helperObjToRest.role(x,baseUrl,isInAdminScope) )   
 
           ###
           @TODO Paginate result and stuff, and transform
