@@ -14,7 +14,7 @@ Main entry point for the plugin
 @option options [String|Function] accountId the account id to use, or an async function.
 @option options [String] baseUrl the url to your API. For example https://api.mystuff.com
 @option options [String] routesBaseName the name of the endpoints, defaults to role.
-@option options [String] adminScopeName the name of the admin scope, defaults to admin.
+@option options [String] serverAdminScopeName the name of the serverAdmin scope, defaults to serverAdmin.
 @param [Function] cb the callback invoked after completion
 
 When passing a function to the accountId the signature needs to be as follows:
@@ -31,7 +31,7 @@ module.exports.register = (plugin, options = {}, cb) ->
 
   defaults =
     routesBaseName: 'roles'
-    adminScopeName: 'admin'
+    serverAdminScopeName: 'server-admin'
   options = Hoek.applyToDefaults defaults, options
 
   routes plugin,options

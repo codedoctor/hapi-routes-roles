@@ -10,34 +10,31 @@ module.exports = (plugin,options = {}) ->
   Hoek.assert options.accountId, i18n.optionsAccountIdRequired
   Hoek.assert options.baseUrl,i18n.optionsBaseUrlRequired
   Hoek.assert options.routesBaseName,i18n.optionsRoutesBaseNameRequired
-  Hoek.assert options.adminScopeName,i18n.optionsAdminScopeNameRequired
+  Hoek.assert options.serverAdminScopeName,i18n.optionsServerAdminScopeNameRequired
 
   hapiIdentityStore = -> plugin.plugins['hapi-identity-store']
   Hoek.assert hapiIdentityStore(),i18n.couldNotFindPlugin
 
   methodsRoles = -> hapiIdentityStore().methods.roles
-
   Hoek.assert methodsRoles(),i18n.couldNotFindMethodsRoles
 
   fnRaise404 = (request,reply) ->
     reply Boom.notFound("#{i18n.notFoundPrefix} #{options.baseUrl}#{request.path}")
 
   ###
-  Returns the accountId to use. In the basic implementation this is taken from the options, but it can be overriden in the options.
+  Returns the accountId to use.
   ###
   fnAccountId = (request,cb) ->
     cb null, options.accountId
 
   fnAccountId = options.fnAccountId if options.accountId and _.isFunction(options.accountId)
 
+  ###
+  Determines if the current request is in serverAdmin scope
+  ###
   fnIsInAdminScope = (request) ->
-    #return false unless options.adminScopeName
     scopes = (request.auth?.credentials?.scopes) || []
-    return _.contains scopes,options.adminScopeName
-
-  ###
-  @TODO PATCH, GET ONE
-  ###
+    return _.contains scopes,options.serverAdminScopeName
 
   ###
   Builds the base url for roles, defaults to ../roles
@@ -55,13 +52,10 @@ module.exports = (plugin,options = {}) ->
       fnAccountId request, (err,accountId) ->
         return reply err if err
 
-        queryOptions = {}
-
         isInAdminScope = fnIsInAdminScope(request)
 
-        unless isInAdminScope
-          queryOptions.where =
-            isInternal : false
+        queryOptions = {}
+        queryOptions.where = isInternal : false unless isInAdminScope
 
         ###
         @TODO Options from query, sort, pagination

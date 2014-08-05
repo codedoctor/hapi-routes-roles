@@ -33,4 +33,4 @@ module.exports =
     username: 'John Smith'
     accountId: '13a88c31413019245de27da0'
     roles: []
-    scopes: ['admin']
+    scopes: ['server-admin']
