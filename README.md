@@ -1,11 +1,11 @@
-[![Build Status](https://travis-ci.org/codedoctor/hapi-routes-users-roles.svg?branch=master)](https://travis-ci.org/codedoctor/hapi-routes-users-roles)
-[![Coverage Status](https://img.shields.io/coveralls/codedoctor/hapi-routes-users-roles.svg)](https://coveralls.io/r/codedoctor/hapi-routes-users-roles)
-[![NPM Version](http://img.shields.io/npm/v/hapi-routes-users-roles.svg)](https://www.npmjs.org/package//hapi-routes-users-roles)
-[![Dependency Status](https://gemnasium.com/codedoctor/hapi-routes-users-roles.svg)](https://gemnasium.com/codedoctor/hapi-routes-users-roles)
-[![NPM Downloads](http://img.shields.io/npm/dm/hapi-routes-users-roles.svg)](https://www.npmjs.org/package/hapi-routes-users-roles)
-[![Issues](http://img.shields.io/github/issues/codedoctor/hapi-routes-users-roles.svg)](https://github.com/codedoctor/hapi-routes-users-roles/issues)
+[![Build Status](https://travis-ci.org/codedoctor/hapi-routes-roles.svg?branch=master)](https://travis-ci.org/codedoctor/hapi-routes-roles)
+[![Coverage Status](https://img.shields.io/coveralls/codedoctor/hapi-routes-roles.svg)](https://coveralls.io/r/codedoctor/hapi-routes-roles)
+[![NPM Version](http://img.shields.io/npm/v/hapi-routes-roles.svg)](https://www.npmjs.org/package//hapi-routes-roles)
+[![Dependency Status](https://gemnasium.com/codedoctor/hapi-routes-roles.svg)](https://gemnasium.com/codedoctor/hapi-routes-roles)
+[![NPM Downloads](http://img.shields.io/npm/dm/hapi-routes-roles.svg)](https://www.npmjs.org/package/hapi-routes-roles)
+[![Issues](http://img.shields.io/github/issues/codedoctor/hapi-routes-roles.svg)](https://github.com/codedoctor/hapi-routes-roles/issues)
 [![HAPI 6.0](http://img.shields.io/badge/hapi-6.0-blue.svg)](http://hapijs.com)
-[![API Documentation](http://img.shields.io/badge/API-Documentation-ff69b4.svg)](http://coffeedoc.info/github/codedoctor/hapi-routes-users-roles)
+[![API Documentation](http://img.shields.io/badge/API-Documentation-ff69b4.svg)](http://coffeedoc.info/github/codedoctor/hapi-routes-roles)
 
 (C) 2014 Martin Wawrusch
 
@@ -24,7 +24,7 @@ Provides API endpoints for HAPI servers to manage roles.
 * [hapi-routes-authorization-and-session-management](https://github.com/codedoctor/hapi-routes-authorization-and-session-management)
 * [hapi-routes-status](https://github.com/codedoctor/hapi-routes-status)
 * [hapi-routes-users](https://github.com/codedoctor/hapi-routes-users)
-* [hapi-routes-users-roles](https://github.com/codedoctor/hapi-routes-users-roles)
+* [hapi-routes-roles](https://github.com/codedoctor/hapi-routes-roles)
 
 and additionally
 
