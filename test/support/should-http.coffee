@@ -101,38 +101,13 @@ module.exports =
       response.statusCode.should.equal 404
       cb null
 
-  delete200: (server,pathWithRoot,credentials,cb) ->
+  delete: (server,pathWithRoot,credentials,statusCode = 200,cb) ->
     options =
       method: "DELETE"
       url: pathWithRoot
       credentials: credentials
 
     server.inject options, (response) ->
-      response.statusCode.should.equal 200 
-      cb null
-
-  ###
-  A 204 should be returned if a delete happened, but no content is returned (most likely because the deleted object has already been deleted)
-  ###
-  delete204: (server,pathWithRoot,credentials,cb) ->
-    options =
-      method: "DELETE"
-      url: pathWithRoot
-      credentials: credentials
-
-    server.inject options, (response) ->
-      response.statusCode.should.equal 204 
-      cb null
-
-  ###
-  A 401 on deleted should be returned when a delete operation is not authorized.
-  ###
-  delete401: (server,pathWithRoot,cb) ->
-    options =
-      method: "DELETE"
-      url: pathWithRoot
-
-    server.inject options, (response) ->
-      response.statusCode.should.equal 401  
-      cb null
+      response.statusCode.should.equal statusCode
+      cb null,response
 

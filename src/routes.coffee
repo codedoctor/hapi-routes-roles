@@ -84,7 +84,6 @@ module.exports = (plugin,options = {}) ->
         return reply err if err
         return reply Boom.unauthorized(i18n.authorizationRequired) unless request.auth?.credentials
         isInServerAdmin = fnIsInServerAdmin(request)
-
         return reply Boom.forbidden("'#{options.serverAdminScopeName}' #{i18n.serverAdminScopeRequired}") unless isInServerAdmin
 
         methodsRoles().create accountId, request.payload, null,  (err,role) ->
@@ -104,11 +103,12 @@ module.exports = (plugin,options = {}) ->
       fnAccountId request, (err,accountId) ->
         return reply err if err
 
-        methodsRoles().getByNameOrId options.accountId, rolenameOrIdOrMe,null,  (err,role) ->
-          return reply err if err
-          return reply().code(204) unless role # no role -> deleted
+        return reply Boom.unauthorized(i18n.authorizationRequired) unless request.auth?.credentials
+        isInServerAdmin = fnIsInServerAdmin(request)
+        return reply Boom.forbidden("'#{options.serverAdminScopeName}' #{i18n.serverAdminScopeRequired}") unless isInServerAdmin
 
-          methodsRoles().removeIdentityFromUser role._id, request.params.authorizationId, (err) ->
-            return reply err if err
-            reply().code(204)
+        methodsRoles().destroy request.params.roleId, null,  (err,role) ->
+          return reply err if err
+          
+          reply().code(204)
 

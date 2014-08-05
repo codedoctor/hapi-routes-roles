@@ -10,7 +10,6 @@ describe 'NO ROLES IN DB', ->
   server = null
 
   describe 'with server setup', ->
-
     beforeEach (cb) ->
       loadServer (err,serverResult) ->
         return cb err if err
@@ -57,20 +56,20 @@ describe 'NO ROLES IN DB', ->
             item.should.have.property "accountId"
             cb null
 
-    ###
+    describe 'DELETE /roles/[wrongid]', ->
+      describe 'with NO credentials', ->
+        it 'should return a 401', (cb) ->
+          shouldHttp.delete server, "/roles/#{fixtures.invalidRoleId}",null,401, (err,response) ->
+            cb err
 
-    describe 'DELETE /users/.../authorizations/...', ->
-      describe 'with a non existing user', ->
+      describe 'with USER credentials', ->
+        it 'should return a 403', (cb) ->
+          shouldHttp.delete server, "/roles/#{fixtures.invalidRoleId}",fixtures.credentialsUser,403, (err,response) ->
+            cb err
+
+      describe 'with SERVER ADMIN credentials', ->
         it 'should return a 204', (cb) ->
-          options =
-            method: "DELETE"
-            url: "/users/#{fixtures.invalidUserId}/authorizations/#{fixtures.invalidAuthorizationId}"
-          server.inject options, (response) ->
-            result = response.result
+          shouldHttp.delete server,"/roles/#{fixtures.invalidRoleId}",fixtures.credentialsServerAdmin,204, (err,response) ->
+            cb err
 
-            response.statusCode.should.equal 204
-            should.not.exist result
-      
-            cb null
-    ###
     

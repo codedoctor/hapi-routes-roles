@@ -61,6 +61,24 @@ describe 'roles in db', ->
 
             cb null
 
+    describe 'DELETE /roles/[validid]', ->
+      describe 'with NO credentials', ->
+        it 'should return a 401', (cb) ->
+          shouldHttp.delete server, "/roles/#{fixtures.role1.id}",null,401, (err,response) ->
+            cb err
+
+      describe 'with USER credentials', ->
+        it 'should return a 403', (cb) ->
+          shouldHttp.delete server, "/roles/#{fixtures.role1.id}",fixtures.credentialsUser,403, (err,response) ->
+            cb err
+
+      describe 'with SERVER ADMIN credentials', ->
+        it 'should return a 204', (cb) ->
+          shouldHttp.delete server,"/roles/#{fixtures.role1.id}",fixtures.credentialsServerAdmin,204, (err,response) ->
+            cb err
+
+
+
 ###
 
 
