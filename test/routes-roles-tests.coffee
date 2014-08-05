@@ -48,6 +48,8 @@ describe 'roles in db', ->
           shouldHttp.get200Paged server,'/roles',3,fixtures.credentialsServerAdmin, (err,response) ->
             return cb err if err
 
+            #console.log JSON.stringify response.result
+
             for item in response.result.items
               item.should.have.property "_url"
               item.should.have.property "name"

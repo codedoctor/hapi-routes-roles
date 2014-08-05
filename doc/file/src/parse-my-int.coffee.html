@@ -21,13 +21,13 @@
     &raquo;
     <span class='title'>src</span>
     &raquo;
-    <span class='title'>helper-obj-to-rest.coffee</span>
+    <span class='title'>parse-my-int.coffee</span>
   </div>
 </div>
     <div id='content'>
       <h1>
         File:
-        helper-obj-to-rest.coffee
+        parse-my-int.coffee
       </h1>
       <table class='box'>
         <tr>
@@ -35,35 +35,32 @@
           <td>src</td>
         </tr>
       </table>
-      <h2>Variables Summary</h2>
-      <dl class='constants'>
-  <dt id='module.exports-variable'>
-    module.exports
-    =
-  </dt>
-  <dd>
-    <pre><code class='coffeescript'>{
-  role: function(role, baseUrl, isInAdminScope) {
-    var res;
-    if (!role) {
-      return null;
-    }
-    res = {
-      _url: &quot;&quot; + baseUrl + &quot;&#47;&quot; + role._id,
-      id: role._id,
-      name: role.name,
-      description: role.description
-    };
-    if (isInAdminScope) {
-      res.accountId = role.accountId;
-      res.isInternal = role.isInternal;
-    }
-    return res;
-  }
-}</code></pre>
+      <h2>Method Summary</h2>
+      <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#parseMyInt-'>
+        ~
+(void)
+<b>parseMyInt</b><span>(someValue, def = 0)</span>
+      </a>
+    </span>
+    <span class='desc'>
+    </span>
+  </li>
+</ul>
+      <h2>Method Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='parseMyInt-'>
+      ~
+(void)
+<b>parseMyInt</b><span>(someValue, def = 0)</span>
+      <br>
+    </p>
     
-  </dd>
-</dl>
+  </div>
+</div>
     </div>
     <div id='footer'>
   August 05, 14 12:38:55 by

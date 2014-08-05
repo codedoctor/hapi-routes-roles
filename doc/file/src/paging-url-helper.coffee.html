@@ -21,49 +21,30 @@
     &raquo;
     <span class='title'>src</span>
     &raquo;
-    <span class='title'>helper-obj-to-rest.coffee</span>
+    <span class='title'>paging-url-helper.coffee</span>
   </div>
 </div>
     <div id='content'>
       <h1>
         File:
-        helper-obj-to-rest.coffee
+        paging-url-helper.coffee
       </h1>
       <table class='box'>
         <tr>
           <td>Defined in:</td>
           <td>src</td>
         </tr>
+        <tr>
+          <td>
+            Classes:
+          </td>
+          <td>
+            <a href='../../class/PagingUrlHelper.html'>
+              PagingUrlHelper
+            </a>
+          </td>
+        </tr>
       </table>
-      <h2>Variables Summary</h2>
-      <dl class='constants'>
-  <dt id='module.exports-variable'>
-    module.exports
-    =
-  </dt>
-  <dd>
-    <pre><code class='coffeescript'>{
-  role: function(role, baseUrl, isInAdminScope) {
-    var res;
-    if (!role) {
-      return null;
-    }
-    res = {
-      _url: &quot;&quot; + baseUrl + &quot;&#47;&quot; + role._id,
-      id: role._id,
-      name: role.name,
-      description: role.description
-    };
-    if (isInAdminScope) {
-      res.accountId = role.accountId;
-      res.isInternal = role.isInternal;
-    }
-    return res;
-  }
-}</code></pre>
-    
-  </dd>
-</dl>
     </div>
     <div id='footer'>
   August 05, 14 12:38:55 by

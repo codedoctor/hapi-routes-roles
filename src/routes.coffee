@@ -5,6 +5,8 @@ Hoek = require "hoek"
 helperObjToRest = require './helper-obj-to-rest'
 i18n = require './i18n'
 validationSchemas = require './validation-schemas'
+PagingUrlHelper = require './paging-url-helper'
+parseMyInt = require './parse-my-int'
 
 module.exports = (plugin,options = {}) ->
   Hoek.assert options.accountId, i18n.optionsAccountIdRequired
@@ -55,12 +57,10 @@ module.exports = (plugin,options = {}) ->
         isInAdminScope = fnIsInAdminScope(request)
 
         queryOptions = {}
+        queryOptions.offset = parseMyInt(request.query.offset,0)
+        queryOptions.count = parseMyInt(request.query.count,20)
         queryOptions.where = isInternal : false unless isInAdminScope
 
-        ###
-        @TODO Options from query, sort, pagination
-        file isInternal based on scope
-        ###
         methodsRoles().all accountId, queryOptions,  (err,rolesResult) ->
           return reply err if err
 
@@ -68,11 +68,9 @@ module.exports = (plugin,options = {}) ->
 
           rolesResult.items = _.map(rolesResult.items, (x) -> helperObjToRest.role(x,baseUrl,isInAdminScope) )   
 
-          ###
-          @TODO Paginate result and stuff, and transform
-          ###
+          pp = new PagingUrlHelper queryOptions.offset,queryOptions.count, rolesResult.totalCount,request.url
 
-          reply rolesResult
+          reply pp.convertToRest( rolesResult)
 
   
   plugin.route
