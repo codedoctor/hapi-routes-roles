@@ -15,3 +15,4 @@ module.exports =
 
   notFoundPrefix: "Could not find"
   authorizationRequired: "Authentication required for this endpoint."
+  serverAdminScopeRequired: " scope required to access this resource."

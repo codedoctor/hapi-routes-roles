@@ -76,9 +76,9 @@ module.exports = (plugin,options = {}) ->
   plugin.route
     path: "/#{options.routesBaseName}"
     method: "POST"
-    #config:
-    #  validate:
-    #    payload: validationSchemas.payloadRolesPost
+    config:
+      validate:
+        payload: validationSchemas.payloadRolesPost
     handler: (request, reply) ->
       fnAccountId request, (err,accountId) ->
         return reply err if err
