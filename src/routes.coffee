@@ -10,6 +10,7 @@ module.exports = (plugin,options = {}) ->
   Hoek.assert options.accountId, i18n.optionsAccountIdRequired
   Hoek.assert options.baseUrl,i18n.optionsBaseUrlRequired
   Hoek.assert options.routesBaseName,i18n.optionsRoutesBaseNameRequired
+  Hoek.assert options.adminScopeName,i18n.optionsAdminScopeNameRequired
 
   hapiIdentityStore = -> plugin.plugins['hapi-identity-store']
   Hoek.assert hapiIdentityStore(),i18n.couldNotFindPlugin
@@ -28,6 +29,11 @@ module.exports = (plugin,options = {}) ->
     cb null, options.accountId
 
   fnAccountId = options.fnAccountId if options.accountId and _.isFunction(options.accountId)
+
+  fnIsInAdminScope = (request) ->
+    #return false unless options.adminScopeName
+    scopes = (request.auth?.credentials?.scopes) || []
+    return _.contains scopes,options.adminScopeName
 
   ###
   @TODO PATCH, GET ONE
@@ -49,11 +55,18 @@ module.exports = (plugin,options = {}) ->
       fnAccountId request, (err,accountId) ->
         return reply err if err
 
+        queryOptions = {}
+
+        if !fnIsInAdminScope(request)
+          queryOptions.where =
+            isInternal : false
+
+
         ###
         @TODO Options from query, sort, pagination
         file isInternal based on scope
         ###
-        methodsRoles().all accountId, null,  (err,rolesResult) ->
+        methodsRoles().all accountId, queryOptions,  (err,rolesResult) ->
           return reply err if err
 
           baseUrl = fnRolesBaseUrl()
@@ -62,7 +75,7 @@ module.exports = (plugin,options = {}) ->
           @TODO Paginate result and stuff, and transform
           ###
 
-          reply {}
+          reply rolesResult
 
   
   plugin.route

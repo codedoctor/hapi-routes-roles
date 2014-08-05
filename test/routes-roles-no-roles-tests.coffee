@@ -4,8 +4,9 @@ should = require 'should'
 fixtures = require './support/fixtures'
 loadServer = require './support/load-server'
 setupServer = require './support/setup-server'
+shouldHttp = require './support/should-http'
 
-describe 'NO USER IN DB', ->
+describe 'NO ROLES IN DB', ->
   server = null
 
   describe 'with server setup', ->
@@ -16,6 +17,19 @@ describe 'NO USER IN DB', ->
         server = serverResult
         setupServer server,(err) ->
           cb err
+
+    describe 'GET /roles', ->
+      describe 'with NO credentials', ->
+        it 'should return a 200', (cb) ->
+          shouldHttp.get200PagedEmptyResult server,'/roles',null, cb
+
+      describe 'with USER credentials', ->
+        it 'should return a 200', (cb) ->
+          shouldHttp.get200PagedEmptyResult server,'/roles',fixtures.credentialsUser, cb
+
+      describe 'with ADMIN credentials', ->
+        it 'should return a 200', (cb) ->
+          shouldHttp.get200PagedEmptyResult server,'/roles',fixtures.credentialsAdmin, cb
 
     ###
     describe 'GET /users/.../authorizations', ->

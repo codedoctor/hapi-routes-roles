@@ -13,11 +13,12 @@ Main entry point for the plugin
 @param [Object] options the plugin options
 @option options [String|Function] accountId the account id to use, or an async function.
 @option options [String] baseUrl the url to your API. For example https://api.mystuff.com
-@option options [String] routesBaseName the name of the endpoints, defaults to role
+@option options [String] routesBaseName the name of the endpoints, defaults to role.
+@option options [String] adminScopeName the name of the admin scope, defaults to admin.
 @param [Function] cb the callback invoked after completion
 
-@note
 When passing a function to the accountId the signature needs to be as follows:
+
 ```coffeescript
   fnAccountId = (request,cb) ->
     accountId = null
@@ -29,7 +30,8 @@ When passing a function to the accountId the signature needs to be as follows:
 module.exports.register = (plugin, options = {}, cb) ->
 
   defaults =
-    routesBaseName: "roles"
+    routesBaseName: 'roles'
+    adminScopeName: 'admin'
   options = Hoek.applyToDefaults defaults, options
 
   routes plugin,options

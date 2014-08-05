@@ -9,8 +9,8 @@ module.exports =
   optionsAccountIdRequired : "options parameter requires an accountId"
   optionsBaseUrlRequired: "options parameter requires a baseUrl (http://api.mysite.com , http://localhost:4321)"
   optionsRoutesBaseNameRequired: "options parameter requires a routesBaseName (roles)"
+  optionsAdminScopeNameRequired: "options paramter requires an adminScopeName (admin)"
   couldNotFindPlugin: "Could not find 'hapi-identity-store' plugin."
-
   couldNotFindMethodsRoles: "Could not find 'methods.roles' in 'hapi-identity-store' plugin."
 
   notFoundPrefix: "Could not find"

@@ -46,9 +46,7 @@
       </a>
     </span>
     <span class='desc'>
-      Main entry point for the plugin <p>@note
-When passing a function to the accountId the signature needs to be as follows:
-```coffeescript fnAccountId = (request,cb) -&gt;
+      Main entry point for the plugin <p>When passing a function to the accountId the signature needs to be as follows:</p><p>```coffeescript fnAccountId = (request,cb) -&gt;
     accountId = null</p>
     </span>
   </li>
@@ -63,9 +61,7 @@ When passing a function to the accountId the signature needs to be as follows:
       <br>
     </p>
     <div class='docstring'>
-  <p>Main entry point for the plugin</p><p>@note
-When passing a function to the accountId the signature needs to be as follows:
-```coffeescript fnAccountId = (request,cb) -&gt;
+  <p>Main entry point for the plugin</p><p>When passing a function to the accountId the signature needs to be as follows:</p><p>```coffeescript fnAccountId = (request,cb) -&gt;
     accountId = null</p><pre><code># lookup accountId here ...
 cb null, accountId
 </code></pre><p>```</p>
@@ -137,7 +133,17 @@ cb null, accountId
         )
       </span>
       &mdash;
-      <span class='desc'>the name of the endpoints, defaults to role </span>
+      <span class='desc'>the name of the endpoints, defaults to role. </span>
+    </li>
+    <li>
+      <span class='name'>adminScopeName</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>the name of the admin scope, defaults to admin. </span>
     </li>
   </ul>
 </div>
@@ -145,7 +151,7 @@ cb null, accountId
 </div>
     </div>
     <div id='footer'>
-  August 05, 14 10:16:11 by
+  August 05, 14 10:51:57 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

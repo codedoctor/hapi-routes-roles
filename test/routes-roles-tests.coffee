@@ -7,7 +7,7 @@ setupServer = require './support/setup-server'
 setupRoles = require './support/setup-roles'
 shouldHttp = require './support/should-http'
 
-describe 'ROLES IN DB', ->
+describe 'roles in db', ->
   server = null
 
   describe 'with server setup and users', ->
@@ -22,58 +22,20 @@ describe 'ROLES IN DB', ->
             cb err
 
     describe 'GET /roles', ->
-      describe 'with no roles in the db', ->
-        describe 'WITHOUT CREDENTIALS', ->
-          it 'should return a 200', (cb) ->
-            options =
-              method: "GET"
-              url: "/roles"
-            server.inject options, (response) ->
-              result = response.result
+      describe 'with NO credentials', ->
+        it 'should return a 200', (cb) ->
+          shouldHttp.get200Paged server,'/roles',2,null, cb
 
-              response.statusCode.should.equal 200
-              should.exist result
-              ###
-              @TODO check paged result
-              ###
-        
-              cb null
+      describe 'with USER credentials', ->
+        it 'should return a 200', (cb) ->
+          shouldHttp.get200Paged server,'/roles',2,fixtures.credentialsUser, cb
+
+      describe 'with ADMIN credentials', ->
+        it 'should return a 200', (cb) ->
+          shouldHttp.get200Paged server,'/roles',3,fixtures.credentialsAdmin, cb
 
 ###
 
-        describe 'WITH CREDENTIALS', ->
-          it 'should return a 200', (cb) ->
-            options =
-              method: "GET"
-              url: "/roles"
-              credentials: fixtures.credentialsUser
-            server.inject options, (response) ->
-              result = response.result
-
-              response.statusCode.should.equal 200
-              should.exist result
-              ##
-              @TODO check paged result
-              ##
-        
-              cb null
-
-        describe 'WITH ADMIN CREDENTIALS', ->
-          it 'should return a 200', (cb) ->
-            options =
-              method: "GET"
-              url: "/roles"
-              credentials: fixtures.credentialsAdmin
-            server.inject options, (response) ->
-              result = response.result
-
-              response.statusCode.should.equal 200
-              should.exist result
-              ##
-              @TODO check paged result
-              ##
-        
-              cb null
 
 
     describe 'POST /roles', ->

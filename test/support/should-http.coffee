@@ -12,7 +12,7 @@ module.exports =
       should.exist response.result
       response.result.should.have.property "totalCount",0
 
-      cb null
+      cb null,response
 
   get200Paged: (server,pathWithRoot,resultCount,credentials,cb) ->
     options =
