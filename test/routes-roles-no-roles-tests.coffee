@@ -72,4 +72,20 @@ describe 'NO ROLES IN DB', ->
           shouldHttp.delete server,"/roles/#{fixtures.invalidRoleId}",fixtures.credentialsServerAdmin,204, (err,response) ->
             cb err
 
+    describe 'PATCH /roles/[wrongid]', ->
+      describe 'with NO credentials', ->
+        it 'should return a 401', (cb) ->
+          shouldHttp.patch server, "/roles/#{fixtures.invalidRoleId}",fixtures.role1,null,401, (err,response) ->
+            cb err
+
+      describe 'with USER credentials', ->
+        it 'should return a 403', (cb) ->
+          shouldHttp.patch server, "/roles/#{fixtures.invalidRoleId}",fixtures.role1,fixtures.credentialsUser,403, (err,response) ->
+            cb err
+
+      describe 'with SERVER ADMIN credentials', ->
+        it 'should return a 404', (cb) ->
+          shouldHttp.patch server,"/roles/#{fixtures.invalidRoleId}",fixtures.role1,fixtures.credentialsServerAdmin,404, (err,response) ->
+            cb err
+
     

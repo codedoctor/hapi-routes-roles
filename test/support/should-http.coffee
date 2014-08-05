@@ -69,7 +69,7 @@ module.exports =
       cb null,response
       
 
-  patch200: (server,pathWithRoot,credentials,payload = {},cb) ->
+  patch: (server,pathWithRoot,payload,credentials,statusCode = 200,cb) ->
     options =
       method: "PATCH"
       url: pathWithRoot
@@ -77,30 +77,9 @@ module.exports =
       payload: payload
 
     server.inject options, (response) ->
-      response.statusCode.should.equal 200
+      response.statusCode.should.equal statusCode
       cb null,response
-      
-  patch401: (server,pathWithRoot,cb) ->
-    options =
-      method: "PATCH"
-      url: pathWithRoot
-
-    server.inject options, (response) ->
-      response.statusCode.should.equal 401  
-      cb null
-
-
-  patch404: (server,pathWithRoot,credentials,payload = {},cb) ->
-    options =
-      method: "PATCH"
-      url: pathWithRoot
-      credentials : credentials
-      payload: payload
-
-    server.inject options, (response) ->
-      response.statusCode.should.equal 404
-      cb null
-
+ 
   delete: (server,pathWithRoot,credentials,statusCode = 200,cb) ->
     options =
       method: "DELETE"

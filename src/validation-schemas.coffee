@@ -9,8 +9,14 @@ module.exports =
       roleId: validateId.required() 
     )
 
+  paramsRolesPatch: Joi.object().keys(
+      roleId: validateId.required() 
+    )
+
+
   paramsRolesGet: Joi.object().keys()
 
+  payloadRolesPatch: Joi.object().keys().options({ allowUnkown: true, stripUnknown: false }) 
   payloadRolesPost: Joi.object().keys().options({ allowUnkown: true, stripUnknown: false })
 
 ###

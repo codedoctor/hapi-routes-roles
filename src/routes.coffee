@@ -112,3 +112,28 @@ module.exports = (plugin,options = {}) ->
           
           reply().code(204)
 
+  plugin.route
+    path: "/#{options.routesBaseName}/{roleId}"
+    method: "PATCH"
+    config:
+      validate:
+        params: validationSchemas.paramsRolesPatch
+        payload: validationSchemas.payloadRolesPatch
+    handler: (request, reply) ->
+      fnAccountId request, (err,accountId) ->
+        return reply err if err
+
+        return reply Boom.unauthorized(i18n.authorizationRequired) unless request.auth?.credentials
+        isInServerAdmin = fnIsInServerAdmin(request)
+        return reply Boom.forbidden("'#{options.serverAdminScopeName}' #{i18n.serverAdminScopeRequired}") unless isInServerAdmin
+
+        methodsRoles().get request.params.roleId,  null,  (err,role) ->
+          return reply err if err
+          return reply Boom.notFound(request.url) unless role
+
+          baseUrl = fnRolesBaseUrl()
+
+          methodsRoles().patch request.params.roleId, request.payload, null,  (err,role) ->
+            return reply err if err          
+            reply(helperObjToRest.role(role,baseUrl,isInServerAdmin)).code(200)
+
