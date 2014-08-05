@@ -137,3 +137,24 @@ module.exports = (plugin,options = {}) ->
             return reply err if err          
             reply(helperObjToRest.role(role,baseUrl,isInServerAdmin)).code(200)
 
+  plugin.route
+    path: "/#{options.routesBaseName}/{roleId}"
+    method: "GET"
+    config:
+      validate:
+        params: validationSchemas.paramsRolesGetOne
+    handler: (request, reply) ->
+      fnAccountId request, (err,accountId) ->
+        return reply err if err
+
+        return reply Boom.unauthorized(i18n.authorizationRequired) unless request.auth?.credentials
+        
+        isInServerAdmin = fnIsInServerAdmin(request)
+
+        methodsRoles().get request.params.roleId,  null,  (err,role) ->
+          return reply err if err
+          return reply Boom.notFound(request.url) unless role
+
+          baseUrl = fnRolesBaseUrl()
+          reply(helperObjToRest.role(role,baseUrl,isInServerAdmin)).code(200)
+

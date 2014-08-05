@@ -26,14 +26,15 @@ module.exports =
 
       cb null,response
 
-  get401: (server,pathWithRoot,cb) ->
+  get: (server,pathWithRoot,credentials,statusCode,cb) ->
     options =
       method: "GET"
       url: pathWithRoot
+      credentials: credentials
 
     server.inject options, (response) ->
-      response.statusCode.should.equal 401  
-      cb null
+      response.statusCode.should.equal statusCode
+      cb null,response
 
   post: (server,pathWithRoot,payload,credentials,statusCode = 200,cb) ->
     options =

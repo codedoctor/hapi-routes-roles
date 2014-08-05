@@ -5,6 +5,7 @@ fixtures = require './support/fixtures'
 loadServer = require './support/load-server'
 setupServer = require './support/setup-server'
 shouldHttp = require './support/should-http'
+shouldRoles = require './support/should-roles'
 
 describe 'NO ROLES IN DB', ->
   server = null
@@ -46,15 +47,9 @@ describe 'NO ROLES IN DB', ->
         it 'should return a 201', (cb) ->
           shouldHttp.post server, '/roles', fixtures.role1,fixtures.credentialsServerAdmin,201, (err,response) ->
             return cb err if err
-            item = response.result
-            item.should.have.property "_url"
-            item.should.have.property "name"
-            item.should.have.property "description"
-            item.should.have.property "id"
-
-            item.should.have.property "isInternal"
-            item.should.have.property "accountId"
+            shouldRoles.isValidServerAdminRole response.result
             cb null
+
 
     describe 'DELETE /roles/[wrongid]', ->
       describe 'with NO credentials', ->
@@ -88,4 +83,20 @@ describe 'NO ROLES IN DB', ->
           shouldHttp.patch server,"/roles/#{fixtures.invalidRoleId}",fixtures.role1,fixtures.credentialsServerAdmin,404, (err,response) ->
             cb err
 
+
+    describe 'GET /roles/[wrongid]', ->
+      describe 'with NO credentials', ->
+        it 'should return a 401', (cb) ->
+          shouldHttp.get server, "/roles/#{fixtures.invalidRoleId}",null,401, (err,response) ->
+            cb err
+
+      describe 'with USER credentials', ->
+        it 'should return a 404', (cb) ->
+          shouldHttp.get server, "/roles/#{fixtures.invalidRoleId}",fixtures.credentialsUser,404, (err,response) ->
+            cb err
+
+      describe 'with SERVER ADMIN credentials', ->
+        it 'should return a 404', (cb) ->
+          shouldHttp.get server,"/roles/#{fixtures.invalidRoleId}",fixtures.credentialsServerAdmin,404, (err,response) ->
+            cb err
     
