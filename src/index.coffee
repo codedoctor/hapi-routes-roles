@@ -5,16 +5,14 @@ routes = require './routes'
 
 ###
 options:
-  clientId: 'some mongodb guid'
-  accountId: 'some mongodb guid'
+  accountId: 'some mongodb guid' or a function fn(request,cb) -> cb null,accountId
   baseUrl: This is the url to your api. For example https://api.mystuff.com
-``realm: ignore for now
-  scope: leave to null
+  routesBasePath: defaults to '/roles'
 ###
 module.exports.register = (plugin, options = {}, cb) ->
 
   defaults =
-    realm: "default"
+    routesBasePath: "/roles"
   options = Hoek.applyToDefaults defaults, options
 
   routes plugin,options

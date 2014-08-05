@@ -2,7 +2,7 @@ async = require 'async'
 mongoose = require 'mongoose'
 
 collections = [
-  'identitymt.users'
+  'identitymt.roles'
   'identitymt.oauthapps'
   'identitymt.oauthaccesstokens'
 ]

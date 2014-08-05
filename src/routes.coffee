@@ -9,98 +9,108 @@ validationSchemas = require './validation-schemas'
 module.exports = (plugin,options = {}) ->
   Hoek.assert options.accountId, i18n.optionsAccountIdRequired
   Hoek.assert options.baseUrl,i18n.optionsBaseUrlRequired
+  Hoek.assert options.routesBasePath,i18n.optionsRoutesBasePathRequired
+
 
   hapiIdentityStore = -> plugin.plugins['hapi-identity-store']
   Hoek.assert hapiIdentityStore(),i18n.couldNotFindPlugin
 
   methodsRoles = -> hapiIdentityStore().methods.roles
-  methodsOauthAuth = -> hapiIdentityStore().methods.oauthAuth
 
-  Hoek.assert methodsRoles(),i18n.couldNotFindMethodsUsers
-  Hoek.assert methodsOauthAuth(), i18n.couldNotFindMethodsOauthAuth 
-
-  fbUsernameFromRequest = (request) ->
-    usernameOrIdOrMe = request.params.usernameOrIdOrMe
-
-    if usernameOrIdOrMe.toLowerCase() is 'me'
-      return null unless request.auth?.credentials?.id
-      usernameOrIdOrMe = request.auth.credentials.id
-    return usernameOrIdOrMe
+  Hoek.assert methodsRoles(),i18n.couldNotFindMethodsRoles
 
   fnRaise404 = (request,reply) ->
     reply Boom.notFound("#{i18n.notFoundPrefix} #{options.baseUrl}#{request.path}")
 
+  ###
+  Returns the accountId to use. In the basic implementation this is taken from the options, but it can be overriden in the options.
+  ###
+  fnAccountId = (request,cb) ->
+    cb null, options.accountId
+
+  fnAccountId = options.fnAccountId if options.accountId and _.isFunction(options.accountId)
+
+  ###
+  @TODO PATCH, GET ONE
+  ###
+
+  ###
+  Builds the base url for roles, defaults to ../roles
+  ###
+  fnRolesBaseUrl = ->
+    "#{options.baseUrl}#{options.routesBasePath}"
 
   plugin.route
-    path: "/roles"
+    path: options.routesBasePath
     method: "GET"
     config:
       validate:
-        params: validationSchemas.paramsUsersRolesGet
+        params: validationSchemas.paramsRolesGet
     handler: (request, reply) ->
-      usernameOrIdOrMe = fbUsernameFromRequest request
-      return reply Boom.unauthorized(i18n.authorizationRequired) unless usernameOrIdOrMe
-
-      methodsRoles().getByNameOrId options.accountId, usernameOrIdOrMe,null,  (err,user) ->
+      fnAccountId request, (err,accountId) ->
         return reply err if err
-        return fnRaise404(request,reply) unless user
 
-        user.identities ||= []
-        baseUrl = "#{options.baseUrl}/roles"
+        ###
+        @TODO Options from query, sort, pagination
+        file isInternal based on scope
+        ###
+        methodsRoles().all accountId, null,  (err,rolesResult) ->
+          return reply err if err
 
-        result =
-          items: _.map( user.identities, (x) -> helperObjToRest.identity(x,baseUrl)  )
-          totalCount: user.identities.length
-          requestCount: user.identities.length
-          requestOffset: 0 
-        reply result
+          baseUrl = fnRolesBaseUrl()
+
+          ###
+          @TODO Paginate result and stuff, and transform
+          ###
+
+          reply {}
 
   
   plugin.route
-    path: "/roles"
+    path: options.routesBasePath
     method: "POST"
     config:
       validate:
-        params: validationSchemas.paramsUsersRolesPost
-        payload:validationSchemas.payloadUsersRolesPost
+        params: validationSchemas.paramsRolesPost
+        payload:validationSchemas.payloadRolesPost
     handler: (request, reply) ->
-      usernameOrIdOrMe = fbUsernameFromRequest request
-      return reply Boom.unauthorized(i18n.authorizationRequired) unless usernameOrIdOrMe
-
-      methodsRoles().getByNameOrId options.accountId, usernameOrIdOrMe,null,  (err,user) ->
+      fnAccountId request, (err,accountId) ->
         return reply err if err
-        return fnRaise404(request,reply) unless user
 
-        provider = request.payload.provider
-        v1 = request.payload.v1
-        v2 = request.payload.v2
-        profile = request.payload.profile || {}
-
-        ###
-        @TODO This does not work as expected.
-        ###
-        methodsRoles().addIdentityToUser user._id, provider,v1, v2, profile,null,  (err,user,identity) =>
+        methodsRoles().getByNameOrId options.accountId, rolenameOrIdOrMe,null,  (err,role) ->
           return reply err if err
+          return fnRaise404(request,reply) unless role
 
-          baseUrl = "#{options.baseUrl}/roles"
+          provider = request.payload.provider
+          v1 = request.payload.v1
+          v2 = request.payload.v2
+          profile = request.payload.profile || {}
 
-          reply(helperObjToRest.identity(identity,baseUrl)).code(201)
+          ###
+          @TODO This does not work as expected.
+          ###
+          methodsRoles().addIdentityToUser role._id, provider,v1, v2, profile,null,  (err,role,identity) =>
+            return reply err if err
+
+            baseUrl = fnRolesBaseUrl()
+
+            reply(helperObjToRest.toles(role,baseUrl)).code(201)
 
   plugin.route
-    path: "/roles/{roleId}"
+    path: "#{options.routesBasePath}/{roleId}"
     method: "DELETE"
     config:
       validate:
-        params: validationSchemas.paramsUsersRolesDelete
+        params: validationSchemas.paramsRolesDelete
     handler: (request, reply) ->
-      usernameOrIdOrMe = fbUsernameFromRequest request
-      return reply Boom.unauthorized(i18n.authorizationRequired) unless usernameOrIdOrMe
-
-      methodsRoles().getByNameOrId options.accountId, usernameOrIdOrMe,null,  (err,user) ->
+      fnAccountId request, (err,accountId) ->
         return reply err if err
-        return reply().code(204) unless user # no user -> deleted
 
-        methodsRoles().removeIdentityFromUser user._id, request.params.authorizationId, (err) ->
+        methodsRoles().getByNameOrId options.accountId, rolenameOrIdOrMe,null,  (err,role) ->
           return reply err if err
-          reply().code(204)
+          return reply().code(204) unless role # no role -> deleted
+
+          methodsRoles().removeIdentityFromUser role._id, request.params.authorizationId, (err) ->
+            return reply err if err
+            reply().code(204)
 

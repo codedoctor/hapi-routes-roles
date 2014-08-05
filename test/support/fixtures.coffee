@@ -4,26 +4,33 @@ module.exports =
   clientId:  '01234567890123456789000a'
   accountId: '01234567890123456789000b'
 
-  invalidUserId:  '0123456789012345678900aa'
-  invalidAuthorizationId:'0123456789012345678900aa'
+  invalidRoleId:'0123456789012345678900aa'
 
-  validPassword: 'mw123456789!'
+  role1:
+    name: "role1"
+    description: "This is a role 1"
+    isInternal: false
 
-  validAuthorization:
-    provider : "facebook"
-    key : "this is a long key"
-    v1 : "01234"
-    v2 : "56789"
-    profile: 
-      x : 'tesrt'
-    providerType : "XXX"
-    username : "test"
-    displayName : "Test User"
-    profileImage : "http://graph.com/me/image.jpg"
+  role2:
+    name: "role2"
+    description: "This is a role 2"
+    isInternal: false
+
+  roleInternal1:
+    name: "role3"
+    description: "This is a role 3"
+    isInternal: true
 
 
-  user1:
-    username: 'user1'
-    password: 'martin12345'
-    email: "user1@user.com"
-    name: "user 1"
+  credentialsUser:
+    id: "13a88c31413019245de27da7"
+    username: 'Martin Wawrusch'
+    accountId: '13a88c31413019245de27da0'
+    roles: []
+
+  credentialsAdmin:
+    id: "13a88c31413019245de27da0"
+    username: 'John Smith'
+    accountId: '13a88c31413019245de27da0'
+    roles: []
+    scopes: ['admin']

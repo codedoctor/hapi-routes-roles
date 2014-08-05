@@ -17,6 +17,7 @@ describe 'NO USER IN DB', ->
         setupServer server,(err) ->
           cb err
 
+    ###
     describe 'GET /users/.../authorizations', ->
       describe 'with a non existing user', ->
         it 'should return a 404', (cb) ->
@@ -59,3 +60,5 @@ describe 'NO USER IN DB', ->
             should.not.exist result
       
             cb null
+    ###
+    
