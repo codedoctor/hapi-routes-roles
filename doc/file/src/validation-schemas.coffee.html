@@ -37,22 +37,6 @@
       </table>
       <h2>Variables Summary</h2>
       <dl class='constants'>
-  <dt id='minLoginLength-variable'>
-    minLoginLength
-    =
-  </dt>
-  <dd>
-    <pre><code class='coffeescript'>2</code></pre>
-    
-  </dd>
-  <dt id='maxLoginLength-variable'>
-    maxLoginLength
-    =
-  </dt>
-  <dd>
-    <pre><code class='coffeescript'>100</code></pre>
-    
-  </dd>
   <dt id='module.exports-variable'>
     module.exports
     =
@@ -105,8 +89,11 @@
     roleId: validateId.required()
   }),
   paramsRolesGet: Joi.object().keys(),
-  paramsRolesPost: Joi.object().keys(),
-  payloadRolesPost: Joi.object().keys().options({
+  payloadRolesPost: Joi.object().keys({
+    name: Joi.string().min(1).max(100).required().example(&#39;role1&#39;).description(&#39;The name of this role&#39;),
+    description: Joi.string().length(100).description(&#39;The end user description for this role&#39;),
+    isInternal: Joi.boolean()[&quot;default&quot;](false).description(&#39;True when used internally, otherwise visible to end users.&#39;)
+  }).options({
     allowUnkown: true,
     stripUnknown: false
   })
@@ -116,7 +103,7 @@
 </dl>
     </div>
     <div id='footer'>
-  August 05, 14 12:38:55 by
+  August 05, 14 13:15:52 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

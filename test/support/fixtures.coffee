@@ -6,6 +6,10 @@ module.exports =
 
   invalidRoleId:'0123456789012345678900aa'
 
+  invalidRole:
+    description: "This is a role 1"
+    isInternal: false
+
   role1:
     name: "role1"
     description: "This is a role 1"

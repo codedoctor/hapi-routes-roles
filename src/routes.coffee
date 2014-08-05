@@ -34,7 +34,7 @@ module.exports = (plugin,options = {}) ->
   ###
   Determines if the current request is in serverAdmin scope
   ###
-  fnIsInAdminScope = (request) ->
+  fnIsInServerAdmin = (request) ->
     scopes = (request.auth?.credentials?.scopes) || []
     return _.contains scopes,options.serverAdminScopeName
 
@@ -54,19 +54,19 @@ module.exports = (plugin,options = {}) ->
       fnAccountId request, (err,accountId) ->
         return reply err if err
 
-        isInAdminScope = fnIsInAdminScope(request)
+        isInServerAdmin = fnIsInServerAdmin(request)
 
         queryOptions = {}
         queryOptions.offset = parseMyInt(request.query.offset,0)
         queryOptions.count = parseMyInt(request.query.count,20)
-        queryOptions.where = isInternal : false unless isInAdminScope
+        queryOptions.where = isInternal : false unless isInServerAdmin
 
         methodsRoles().all accountId, queryOptions,  (err,rolesResult) ->
           return reply err if err
 
           baseUrl = fnRolesBaseUrl()
 
-          rolesResult.items = _.map(rolesResult.items, (x) -> helperObjToRest.role(x,baseUrl,isInAdminScope) )   
+          rolesResult.items = _.map(rolesResult.items, (x) -> helperObjToRest.role(x,baseUrl,isInServerAdmin) )   
 
           pp = new PagingUrlHelper queryOptions.offset,queryOptions.count, rolesResult.totalCount,request.url
 
@@ -76,32 +76,23 @@ module.exports = (plugin,options = {}) ->
   plugin.route
     path: "/#{options.routesBaseName}"
     method: "POST"
-    config:
-      validate:
-        params: validationSchemas.paramsRolesPost
-        payload:validationSchemas.payloadRolesPost
+    #config:
+    #  validate:
+    #    payload: validationSchemas.payloadRolesPost
     handler: (request, reply) ->
       fnAccountId request, (err,accountId) ->
         return reply err if err
+        return reply Boom.unauthorized(i18n.authorizationRequired) unless request.auth?.credentials
+        isInServerAdmin = fnIsInServerAdmin(request)
 
-        methodsRoles().getByNameOrId options.accountId, rolenameOrIdOrMe,null,  (err,role) ->
+        return reply Boom.forbidden("'#{options.serverAdminScopeName}' #{i18n.serverAdminScopeRequired}") unless isInServerAdmin
+
+        methodsRoles().create accountId, request.payload, null,  (err,role) ->
           return reply err if err
-          return fnRaise404(request,reply) unless role
 
-          provider = request.payload.provider
-          v1 = request.payload.v1
-          v2 = request.payload.v2
-          profile = request.payload.profile || {}
+          baseUrl = fnRolesBaseUrl()
+          reply(helperObjToRest.role(role,baseUrl,isInServerAdmin)).code(201)
 
-          ###
-          @TODO This does not work as expected.
-          ###
-          methodsRoles().addIdentityToUser role._id, provider,v1, v2, profile,null,  (err,role,identity) =>
-            return reply err if err
-
-            baseUrl = fnRolesBaseUrl()
-
-            reply(helperObjToRest.toles(role,baseUrl)).code(201)
 
   plugin.route
     path: "/#{options.routesBaseName}/{roleId}"

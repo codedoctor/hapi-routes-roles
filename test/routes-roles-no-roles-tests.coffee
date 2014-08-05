@@ -31,35 +31,33 @@ describe 'NO ROLES IN DB', ->
         it 'should return a 200', (cb) ->
           shouldHttp.get200PagedEmptyResult server,'/roles',fixtures.credentialsServerAdmin, cb
 
+
+    describe 'POST /roles', ->
+      describe 'with NO credentials', ->
+        it 'should return a 401', (cb) ->
+          shouldHttp.post401 server, '/roles', fixtures.role1,null, (err,response) ->
+            cb err
+
+      describe 'with USER credentials', ->
+        it 'should return a 403', (cb) ->
+          shouldHttp.post403 server, '/roles', fixtures.role1,fixtures.credentialsUser, (err,response) ->
+            cb err
+
+      describe 'with SERVER ADMIN credentials', ->
+        it 'should return a 201', (cb) ->
+          shouldHttp.post201 server, '/roles', fixtures.role1,fixtures.credentialsServerAdmin, (err,response) ->
+            return cb err if err
+            item = response.result
+            item.should.have.property "_url"
+            item.should.have.property "name"
+            item.should.have.property "description"
+            item.should.have.property "id"
+
+            item.should.have.property "isInternal"
+            item.should.have.property "accountId"
+            cb null
+
     ###
-    describe 'GET /users/.../authorizations', ->
-      describe 'with a non existing user', ->
-        it 'should return a 404', (cb) ->
-          options =
-            method: "GET"
-            url: "/users/#{fixtures.invalidUserId}/authorizations"
-          server.inject options, (response) ->
-            result = response.result
-
-            response.statusCode.should.equal 404
-            should.exist result
-      
-            cb null
-
-    describe 'POST /users/.../authorizations', ->
-      describe 'with a non existing user and a valid payload', ->
-        it 'should return a 404', (cb) ->
-          options =
-            method: "POST"
-            url: "/users/#{fixtures.invalidUserId}/authorizations"
-            payload: fixtures.validAuthorization
-          server.inject options, (response) ->
-            result = response.result
-
-            response.statusCode.should.equal 404
-            should.exist result
-
-            cb null
 
     describe 'DELETE /users/.../authorizations/...', ->
       describe 'with a non existing user', ->
