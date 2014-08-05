@@ -28,7 +28,7 @@ module.exports =
     accountId: '13a88c31413019245de27da0'
     roles: []
 
-  credentialsAdmin:
+  credentialsServerAdmin:
     id: "13a88c31413019245de27da0"
     username: 'John Smith'
     accountId: '13a88c31413019245de27da0'

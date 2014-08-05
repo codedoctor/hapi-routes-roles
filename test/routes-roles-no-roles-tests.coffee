@@ -27,9 +27,9 @@ describe 'NO ROLES IN DB', ->
         it 'should return a 200', (cb) ->
           shouldHttp.get200PagedEmptyResult server,'/roles',fixtures.credentialsUser, cb
 
-      describe 'with ADMIN credentials', ->
+      describe 'with SERVER ADMIN credentials', ->
         it 'should return a 200', (cb) ->
-          shouldHttp.get200PagedEmptyResult server,'/roles',fixtures.credentialsAdmin, cb
+          shouldHttp.get200PagedEmptyResult server,'/roles',fixtures.credentialsServerAdmin, cb
 
     ###
     describe 'GET /users/.../authorizations', ->

@@ -23,10 +23,8 @@ module.exports =
     server.inject options, (response) ->
       response.statusCode.should.equal 200    
       should.exist response.result
-      response.result.should.have.property "totalCount",resultCount
-      console.log JSON.stringify(response.result) 
 
-      cb null
+      cb null,response
 
   get401: (server,pathWithRoot,cb) ->
     options =

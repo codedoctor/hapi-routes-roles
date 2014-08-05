@@ -28,11 +28,36 @@ describe 'roles in db', ->
 
       describe 'with USER credentials', ->
         it 'should return a 200', (cb) ->
-          shouldHttp.get200Paged server,'/roles',2,fixtures.credentialsUser, cb
+          shouldHttp.get200Paged server,'/roles',2,fixtures.credentialsUser, (err,response) ->
+            return cb err if err
 
-      describe 'with ADMIN credentials', ->
+            for item in response.result.items
+              item.should.have.property "_url"
+              item.should.have.property "name"
+              item.should.have.property "description"
+              item.should.have.property "id"
+
+              item.should.not.have.property "isInternal"
+              item.should.not.have.property "accountId"
+
+            cb null
+
+
+      describe 'with SERVER ADMIN credentials', ->
         it 'should return a 200', (cb) ->
-          shouldHttp.get200Paged server,'/roles',3,fixtures.credentialsAdmin, cb
+          shouldHttp.get200Paged server,'/roles',3,fixtures.credentialsServerAdmin, (err,response) ->
+            return cb err if err
+
+            for item in response.result.items
+              item.should.have.property "_url"
+              item.should.have.property "name"
+              item.should.have.property "description"
+              item.should.have.property "id"
+
+              item.should.have.property "isInternal"
+              item.should.have.property "accountId"
+
+            cb null
 
 ###
 
@@ -79,7 +104,7 @@ describe 'roles in db', ->
               method: "POST"
               url: "/roles"
               payload: fixtures.roleInternal1
-              credentials: fixtures.credentialsADmin
+              credentials: fixtures.credentialsServerServerAdmin
             server.inject options, (response) ->
               result = response.result
 
@@ -111,7 +136,7 @@ describe 'roles in db', ->
             options =
               method: "DELETE"
               url: "/roles/#{fixtures.invalidRoleId}"
-              credentials: fixtures.credentialsAdmin
+              credentials: fixtures.credentialsServerAdmin
             server.inject options, (response) ->
               result = response.result
 
