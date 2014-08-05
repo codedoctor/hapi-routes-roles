@@ -9,7 +9,7 @@ validationSchemas = require './validation-schemas'
 module.exports = (plugin,options = {}) ->
   Hoek.assert options.accountId, i18n.optionsAccountIdRequired
   Hoek.assert options.baseUrl,i18n.optionsBaseUrlRequired
-  Hoek.assert options.routesBasePath,i18n.optionsRoutesBasePathRequired
+  Hoek.assert options.routesBaseName,i18n.optionsRoutesBaseNameRequired
 
 
   hapiIdentityStore = -> plugin.plugins['hapi-identity-store']
@@ -38,10 +38,10 @@ module.exports = (plugin,options = {}) ->
   Builds the base url for roles, defaults to ../roles
   ###
   fnRolesBaseUrl = ->
-    "#{options.baseUrl}#{options.routesBasePath}"
+    "#{options.baseUrl}/#{options.routesBaseName}"
 
   plugin.route
-    path: options.routesBasePath
+    path: "/#{options.routesBaseName}"
     method: "GET"
     config:
       validate:
@@ -67,7 +67,7 @@ module.exports = (plugin,options = {}) ->
 
   
   plugin.route
-    path: options.routesBasePath
+    path: "/#{options.routesBaseName}"
     method: "POST"
     config:
       validate:
@@ -97,7 +97,7 @@ module.exports = (plugin,options = {}) ->
             reply(helperObjToRest.toles(role,baseUrl)).code(201)
 
   plugin.route
-    path: "#{options.routesBasePath}/{roleId}"
+    path: "/#{options.routesBaseName}/{roleId}"
     method: "DELETE"
     config:
       validate:

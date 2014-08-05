@@ -5,6 +5,7 @@ fixtures = require './support/fixtures'
 loadServer = require './support/load-server'
 setupServer = require './support/setup-server'
 setupRoles = require './support/setup-roles'
+shouldHttp = require './support/should-http'
 
 describe 'ROLES IN DB', ->
   server = null
@@ -38,6 +39,8 @@ describe 'ROLES IN DB', ->
         
               cb null
 
+###
+
         describe 'WITH CREDENTIALS', ->
           it 'should return a 200', (cb) ->
             options =
@@ -49,9 +52,9 @@ describe 'ROLES IN DB', ->
 
               response.statusCode.should.equal 200
               should.exist result
-              ###
+              ##
               @TODO check paged result
-              ###
+              ##
         
               cb null
 
@@ -66,9 +69,9 @@ describe 'ROLES IN DB', ->
 
               response.statusCode.should.equal 200
               should.exist result
-              ###
+              ##
               @TODO check paged result
-              ###
+              ##
         
               cb null
 
@@ -154,3 +157,5 @@ describe 'ROLES IN DB', ->
               should.not.exist result
       
             cb null
+###
+

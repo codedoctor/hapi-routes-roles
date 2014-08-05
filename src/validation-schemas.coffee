@@ -54,17 +54,12 @@ module.exports =
   ###
 
   paramsRolesDelete: Joi.object().keys(
-      usernameOrIdOrMe: validateUsernameOrIdOrMe.required()
-      authorizationId: validateId.required() 
+      roleId: validateId.required() 
     )
 
-  paramsRolesGet: Joi.object().keys(
-      usernameOrIdOrMe: validateUsernameOrIdOrMe.required() 
-    )
+  paramsRolesGet: Joi.object().keys()
 
-  paramsRolesPost: Joi.object().keys(
-      usernameOrIdOrMe: validateUsernameOrIdOrMe.required() 
-    )
+  paramsRolesPost: Joi.object().keys()
 
   payloadRolesPost : Joi.object().keys().options({ allowUnkown: true, stripUnknown: false })
 
