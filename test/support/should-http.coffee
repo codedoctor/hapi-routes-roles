@@ -35,39 +35,16 @@ module.exports =
       response.statusCode.should.equal 401  
       cb null
 
-  post401: (server,pathWithRoot,payload,credentials,cb) ->
+  post: (server,pathWithRoot,payload,credentials,statusCode = 200,cb) ->
     options =
       method: "POST"
-      url: pathWithRoot
       credentials: credentials
       payload: payload
-
-    server.inject options, (response) ->
-      response.statusCode.should.equal 401  
-      cb null,response
-
-  post403: (server,pathWithRoot,payload,credentials,cb) ->
-    options =
-      method: "POST"
-      url: pathWithRoot
-      credentials: credentials
-      payload: payload
-
-    server.inject options, (response) ->
-      response.statusCode.should.equal 403
-      cb null,response
-
-  post201: (server,pathWithRoot,payload,credentials,cb) ->
-    options =
-      method: "POST"
-      payload: payload
-      credentials: credentials
       url: pathWithRoot
 
     server.inject options, (response) ->
-      response.statusCode.should.equal 201  
+      response.statusCode.should.equal statusCode  
       cb null,response
-      
 
   patch: (server,pathWithRoot,payload,credentials,statusCode = 200,cb) ->
     options =

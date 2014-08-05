@@ -34,17 +34,17 @@ describe 'NO ROLES IN DB', ->
     describe 'POST /roles', ->
       describe 'with NO credentials', ->
         it 'should return a 401', (cb) ->
-          shouldHttp.post401 server, '/roles', fixtures.role1,null, (err,response) ->
+          shouldHttp.post server, '/roles', fixtures.role1,null,401, (err,response) ->
             cb err
 
       describe 'with USER credentials', ->
         it 'should return a 403', (cb) ->
-          shouldHttp.post403 server, '/roles', fixtures.role1,fixtures.credentialsUser, (err,response) ->
+          shouldHttp.post server, '/roles', fixtures.role1,fixtures.credentialsUser, 403, (err,response) ->
             cb err
 
       describe 'with SERVER ADMIN credentials', ->
         it 'should return a 201', (cb) ->
-          shouldHttp.post201 server, '/roles', fixtures.role1,fixtures.credentialsServerAdmin, (err,response) ->
+          shouldHttp.post server, '/roles', fixtures.role1,fixtures.credentialsServerAdmin,201, (err,response) ->
             return cb err if err
             item = response.result
             item.should.have.property "_url"
