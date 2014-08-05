@@ -13,10 +13,10 @@ module.exports = (plugin,options = {}) ->
   hapiIdentityStore = -> plugin.plugins['hapi-identity-store']
   Hoek.assert hapiIdentityStore(),i18n.couldNotFindPlugin
 
-  methodsUsers = -> hapiIdentityStore().methods.users
+  methodsRoles = -> hapiIdentityStore().methods.roles
   methodsOauthAuth = -> hapiIdentityStore().methods.oauthAuth
 
-  Hoek.assert methodsUsers(),i18n.couldNotFindMethodsUsers
+  Hoek.assert methodsRoles(),i18n.couldNotFindMethodsUsers
   Hoek.assert methodsOauthAuth(), i18n.couldNotFindMethodsOauthAuth 
 
   fbUsernameFromRequest = (request) ->
@@ -32,21 +32,21 @@ module.exports = (plugin,options = {}) ->
 
 
   plugin.route
-    path: "/users/{usernameOrIdOrMe}/authorizations"
+    path: "/roles"
     method: "GET"
     config:
       validate:
-        params: validationSchemas.paramsUsersAuthorizationsGet
+        params: validationSchemas.paramsUsersRolesGet
     handler: (request, reply) ->
       usernameOrIdOrMe = fbUsernameFromRequest request
       return reply Boom.unauthorized(i18n.authorizationRequired) unless usernameOrIdOrMe
 
-      methodsUsers().getByNameOrId options.accountId, usernameOrIdOrMe,null,  (err,user) ->
+      methodsRoles().getByNameOrId options.accountId, usernameOrIdOrMe,null,  (err,user) ->
         return reply err if err
         return fnRaise404(request,reply) unless user
 
         user.identities ||= []
-        baseUrl = "#{options.baseUrl}/users/#{user._id}/authorizations"
+        baseUrl = "#{options.baseUrl}/roles"
 
         result =
           items: _.map( user.identities, (x) -> helperObjToRest.identity(x,baseUrl)  )
@@ -57,17 +57,17 @@ module.exports = (plugin,options = {}) ->
 
   
   plugin.route
-    path: "/users/{usernameOrIdOrMe}/authorizations"
+    path: "/roles"
     method: "POST"
     config:
       validate:
-        params: validationSchemas.paramsUsersAuthorizationsPost
-        payload:validationSchemas.payloadUsersAuthorizationsPost
+        params: validationSchemas.paramsUsersRolesPost
+        payload:validationSchemas.payloadUsersRolesPost
     handler: (request, reply) ->
       usernameOrIdOrMe = fbUsernameFromRequest request
       return reply Boom.unauthorized(i18n.authorizationRequired) unless usernameOrIdOrMe
 
-      methodsUsers().getByNameOrId options.accountId, usernameOrIdOrMe,null,  (err,user) ->
+      methodsRoles().getByNameOrId options.accountId, usernameOrIdOrMe,null,  (err,user) ->
         return reply err if err
         return fnRaise404(request,reply) unless user
 
@@ -79,28 +79,28 @@ module.exports = (plugin,options = {}) ->
         ###
         @TODO This does not work as expected.
         ###
-        methodsUsers().addIdentityToUser user._id, provider,v1, v2, profile,null,  (err,user,identity) =>
+        methodsRoles().addIdentityToUser user._id, provider,v1, v2, profile,null,  (err,user,identity) =>
           return reply err if err
 
-          baseUrl = "#{options.baseUrl}/users/#{user._id}/authorizations"
+          baseUrl = "#{options.baseUrl}/roles"
 
           reply(helperObjToRest.identity(identity,baseUrl)).code(201)
 
   plugin.route
-    path: "/users/{usernameOrIdOrMe}/authorizations/{authorizationId}"
+    path: "/roles/{roleId}"
     method: "DELETE"
     config:
       validate:
-        params: validationSchemas.paramsUsersAuthorizationsDelete
+        params: validationSchemas.paramsUsersRolesDelete
     handler: (request, reply) ->
       usernameOrIdOrMe = fbUsernameFromRequest request
       return reply Boom.unauthorized(i18n.authorizationRequired) unless usernameOrIdOrMe
 
-      methodsUsers().getByNameOrId options.accountId, usernameOrIdOrMe,null,  (err,user) ->
+      methodsRoles().getByNameOrId options.accountId, usernameOrIdOrMe,null,  (err,user) ->
         return reply err if err
         return reply().code(204) unless user # no user -> deleted
 
-        methodsUsers().removeIdentityFromUser user._id, request.params.authorizationId, (err) ->
+        methodsRoles().removeIdentityFromUser user._id, request.params.authorizationId, (err) ->
           return reply err if err
           reply().code(204)
 

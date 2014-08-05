@@ -1,11 +1,11 @@
 {
-  "name": "hapi-routes-users-roles",
+  "name": "hapi-routes-roles",
   "version": "1.0.0",
   "private": false,
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/codedoctor/hapi-routes-users-roles.git"
+    "url": "https://github.com/codedoctor/hapi-routes-roles.git"
   },
   "scripts": {
     "test": "node_modules/.bin/grunt testandcoverage"

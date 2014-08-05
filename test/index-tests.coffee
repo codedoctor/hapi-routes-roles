@@ -21,6 +21,6 @@ describe 'index has been loaded', ->
       should.exist server
       server.should.have.property "pack"
 
-      should.exist server.pack.plugins['hapi-routes-users-roles']
+      should.exist server.pack.plugins['hapi-routes-roles']
 
       cb null
