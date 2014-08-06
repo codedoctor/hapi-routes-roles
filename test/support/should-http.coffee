@@ -10,7 +10,8 @@ module.exports =
     server.inject options, (response) ->
       response.statusCode.should.equal 200
       should.exist response.result
-      response.result.should.have.property "totalCount",0
+      response.result.should.have.property "_pagination"
+      response.result._pagination.should.have.property "totalCount",0
 
       cb null,response
 

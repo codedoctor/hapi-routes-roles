@@ -1,12 +1,11 @@
 _ = require 'underscore'
+apiPagination = require 'api-pagination'
 Boom = require 'boom'
 Hoek = require "hoek"
 
 helperObjToRest = require './helper-obj-to-rest'
 i18n = require './i18n'
 validationSchemas = require './validation-schemas'
-PagingUrlHelper = require './paging-url-helper'
-parseMyInt = require './parse-my-int'
 
 module.exports = (plugin,options = {}) ->
   Hoek.assert options.accountId, i18n.optionsAccountIdRequired
@@ -57,8 +56,8 @@ module.exports = (plugin,options = {}) ->
         isInServerAdmin = fnIsInServerAdmin(request)
 
         queryOptions = {}
-        queryOptions.offset = parseMyInt(request.query.offset,0)
-        queryOptions.count = parseMyInt(request.query.count,20)
+        queryOptions.offset = apiPagination.parseInt(request.query.offset,0)
+        queryOptions.count = apiPagination.parseInt(request.query.count,20)
         queryOptions.where = isInternal : false unless isInServerAdmin
 
         methodsRoles().all accountId, queryOptions,  (err,rolesResult) ->
@@ -68,9 +67,7 @@ module.exports = (plugin,options = {}) ->
 
           rolesResult.items = _.map(rolesResult.items, (x) -> helperObjToRest.role(x,baseUrl,isInServerAdmin) )   
 
-          pp = new PagingUrlHelper queryOptions.offset,queryOptions.count, rolesResult.totalCount,request.url
-
-          reply pp.convertToRest( rolesResult)
+          reply( apiPagination.toRest( rolesResult,baseUrl))
 
   
   plugin.route
