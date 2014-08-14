@@ -12,6 +12,14 @@ module.exports = (plugin,options = {}) ->
   Hoek.assert options.baseUrl,i18n.optionsBaseUrlRequired
   Hoek.assert options.routesBaseName,i18n.optionsRoutesBaseNameRequired
   Hoek.assert options.serverAdminScopeName,i18n.optionsServerAdminScopeNameRequired
+  Hoek.assert options.tags && _.isArray(options.tags),i18n.optionsTagsRequiredAndArray
+  Hoek.assert options.descriptionGetAll, i18n.optionsDescriptionGetAllRequired
+
+  Hoek.assert options.descriptionGetAll, i18n.optionsDescriptionGetAllRequired
+  Hoek.assert options.descriptionPost, i18n.optionsDescriptionPostRequired
+  Hoek.assert options.descriptionGetOne, i18n.optionsDescriptionGetOneRequired
+  Hoek.assert options.descriptionDeleteOne, i18n.optionsDescriptionDeleteOneRequired
+  Hoek.assert options.descriptionPatchOne, i18n.optionsDescriptionPatchOneRequired
 
   hapiUserStoreMultiTenant = -> plugin.plugins['hapi-user-store-multi-tenant']
   Hoek.assert hapiUserStoreMultiTenant(),i18n.couldNotFindPlugin
@@ -47,6 +55,8 @@ module.exports = (plugin,options = {}) ->
     path: "/#{options.routesBaseName}"
     method: "GET"
     config:
+      description: options.descriptionGetAll
+      tags: options.tags
       validate:
         params: validationSchemas.paramsRolesGet
     handler: (request, reply) ->
@@ -74,6 +84,8 @@ module.exports = (plugin,options = {}) ->
     path: "/#{options.routesBaseName}"
     method: "POST"
     config:
+      description: options.descriptionPost
+      tags: options.tags
       validate:
         payload: validationSchemas.payloadRolesPost
     handler: (request, reply) ->
@@ -94,6 +106,8 @@ module.exports = (plugin,options = {}) ->
     path: "/#{options.routesBaseName}/{roleId}"
     method: "DELETE"
     config:
+      description: options.descriptionDeleteOne
+      tags: options.tags
       validate:
         params: validationSchemas.paramsRolesDelete
     handler: (request, reply) ->
@@ -113,6 +127,8 @@ module.exports = (plugin,options = {}) ->
     path: "/#{options.routesBaseName}/{roleId}"
     method: "PATCH"
     config:
+      description: options.descriptionPatchOne
+      tags: options.tags
       validate:
         params: validationSchemas.paramsRolesPatch
         payload: validationSchemas.payloadRolesPatch
@@ -138,6 +154,8 @@ module.exports = (plugin,options = {}) ->
     path: "/#{options.routesBaseName}/{roleId}"
     method: "GET"
     config:
+      description: options.descriptionGetOne
+      tags: options.tags
       validate:
         params: validationSchemas.paramsRolesGetOne
     handler: (request, reply) ->
