@@ -12,7 +12,7 @@ module.exports =
       description: role.description
 
     if isInAdminScope
-      res.accountId = role.accountId
+      res._tenantId = role._tenantId
       res.isInternal = role.isInternal
 
     res

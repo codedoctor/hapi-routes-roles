@@ -46,8 +46,8 @@
       </a>
     </span>
     <span class='desc'>
-      Main entry point for the plugin <p>When passing a function to the accountId the signature needs to be as follows:</p><p>```coffeescript fnAccountId = (request,cb) -&gt;
-    accountId = null</p>
+      Main entry point for the plugin <p>When passing a function to the _tenantId the signature needs to be as follows:</p><p>```coffeescript fnAccountId = (request,cb) -&gt;
+    _tenantId = null</p>
     </span>
   </li>
 </ul>
@@ -61,9 +61,9 @@
       <br>
     </p>
     <div class='docstring'>
-  <p>Main entry point for the plugin</p><p>When passing a function to the accountId the signature needs to be as follows:</p><p>```coffeescript fnAccountId = (request,cb) -&gt;
-    accountId = null</p><pre><code># lookup accountId here ...
-cb null, accountId
+  <p>Main entry point for the plugin</p><p>When passing a function to the _tenantId the signature needs to be as follows:</p><p>```coffeescript fnAccountId = (request,cb) -&gt;
+    _tenantId = null</p><pre><code># lookup _tenantId here ...
+cb null, _tenantId
 </code></pre><p>```</p>
 </div>
 <div class='tags'>
@@ -106,7 +106,7 @@ cb null, accountId
   </h3>
   <ul class='options'>
     <li>
-      <span class='name'>accountId</span>
+      <span class='name'>_tenantId</span>
       <span class='type'>
         (
           <tt>String|Function</tt>
@@ -151,7 +151,7 @@ cb null, accountId
 </div>
     </div>
     <div id='footer'>
-  August 07, 14 10:39:24 by
+  August 13, 14 21:40:36 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

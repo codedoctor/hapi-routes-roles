@@ -8,7 +8,7 @@ module.exports =
     role.should.have.property "id"
 
     role.should.not.have.property "isInternal"
-    role.should.not.have.property "accountId"
+    role.should.not.have.property "_tenantId"
 
   isValidServerAdminRole: (role) ->
     role.should.have.property "_url"
@@ -17,4 +17,4 @@ module.exports =
     role.should.have.property "id"
 
     role.should.have.property "isInternal"
-    role.should.have.property "accountId"
+    role.should.have.property "_tenantId"
