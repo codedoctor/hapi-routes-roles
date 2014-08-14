@@ -22,7 +22,6 @@ module.exports =
   descriptionGetOne: "An endpoint that retrieves a role."
   descriptionDeleteOne: "An endpoint that deletes a role."
   descriptionPatchOne: "An endpoint that updates properties of a role."
-  descriptionObjectId: "A 24 character hexadecimal unique id"
   descriptionRoleId: "The 24 character hexadecimal object id specifying the role."
   exampleObjectId: '01234567890123456789000b'
 

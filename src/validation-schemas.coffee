@@ -1,11 +1,10 @@
 Joi = require "joi"
 i18n = require "./i18n"
 
-validateId = Joi.string().length(24).description(i18n.descriptionObjectId).example(i18n.exampleObjectId)
+validateId = Joi.string().length(24)
 roleId = validateId.description(i18n.descriptionRoleId).example(i18n.exampleObjectId) 
 
 module.exports =
-  validateId: validateId
   roleId: roleId
 
   paramsRolesDelete: Joi.object().keys(
@@ -15,8 +14,6 @@ module.exports =
   paramsRolesPatch: Joi.object().keys(
       roleId: roleId.required() 
     )
-
-  paramsRolesGet: Joi.object().keys()
 
   paramsRolesGetOne: Joi.object().keys(
       roleId: roleId.required() 

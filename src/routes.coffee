@@ -57,8 +57,6 @@ module.exports = (plugin,options = {}) ->
     config:
       description: options.descriptionGetAll
       tags: options.tags
-      validate:
-        params: validationSchemas.paramsRolesGet
     handler: (request, reply) ->
       fnAccountId request, (err,_tenantId) ->
         return reply err if err
