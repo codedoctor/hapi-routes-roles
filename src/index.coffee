@@ -39,6 +39,7 @@ module.exports.register = (plugin, options = {}, cb) ->
   defaults =
     routesBaseName: 'roles'
     serverAdminScopeName: 'server-admin'
+    adminRolesName : 'admin'
     tags: ['identity','roles']
     descriptionGetAll: i18n.descriptionGetAll
     descriptionPost: i18n.descriptionPost

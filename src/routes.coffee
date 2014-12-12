@@ -13,7 +13,6 @@ module.exports = (plugin,options = {}) ->
   Hoek.assert options.routesBaseName,i18n.optionsRoutesBaseNameRequired
   Hoek.assert options.serverAdminScopeName,i18n.optionsServerAdminScopeNameRequired
   Hoek.assert options.tags && _.isArray(options.tags),i18n.optionsTagsRequiredAndArray
-  Hoek.assert options.descriptionGetAll, i18n.optionsDescriptionGetAllRequired
 
   Hoek.assert options.descriptionGetAll, i18n.optionsDescriptionGetAllRequired
   Hoek.assert options.descriptionPost, i18n.optionsDescriptionPostRequired
@@ -41,9 +40,12 @@ module.exports = (plugin,options = {}) ->
   ###
   Determines if the current request is in serverAdmin scope
   ###
-  fnIsInServerAdmin = (request) ->
+  fnIsInScopeOrRole = (request) ->
     scopes = (request.auth?.credentials?.scopes) || []
-    return _.contains scopes,options.serverAdminScopeName
+    roles = (request.auth?.credentials?.roles) || []
+    isInScope = _.contains scopes,options.serverAdminScopeName 
+    isInRole = _.contains roles,options.adminRolesName 
+    return isInScope or isInRole
 
   ###
   Builds the base url for roles, defaults to ../roles
@@ -61,7 +63,7 @@ module.exports = (plugin,options = {}) ->
       fnAccountId request, (err,_tenantId) ->
         return reply err if err
 
-        isInServerAdmin = fnIsInServerAdmin(request)
+        isInServerAdmin = fnIsInScopeOrRole(request)
 
         queryOptions = {}
         queryOptions.offset = apiPagination.parseInt(request.query.offset,0)
@@ -90,7 +92,7 @@ module.exports = (plugin,options = {}) ->
       fnAccountId request, (err,_tenantId) ->
         return reply err if err
         return reply Boom.unauthorized(i18n.authorizationRequired) unless request.auth?.credentials
-        isInServerAdmin = fnIsInServerAdmin(request)
+        isInServerAdmin = fnIsInScopeOrRole(request)
         return reply Boom.forbidden("'#{options.serverAdminScopeName}' #{i18n.serverAdminScopeRequired}") unless isInServerAdmin
 
         methodsRoles().create _tenantId, request.payload, null,  (err,role) ->
@@ -113,7 +115,7 @@ module.exports = (plugin,options = {}) ->
         return reply err if err
 
         return reply Boom.unauthorized(i18n.authorizationRequired) unless request.auth?.credentials
-        isInServerAdmin = fnIsInServerAdmin(request)
+        isInServerAdmin = fnIsInScopeOrRole(request)
         return reply Boom.forbidden("'#{options.serverAdminScopeName}' #{i18n.serverAdminScopeRequired}") unless isInServerAdmin
 
         methodsRoles().destroy request.params.roleId, null,  (err,role) ->
@@ -135,7 +137,7 @@ module.exports = (plugin,options = {}) ->
         return reply err if err
 
         return reply Boom.unauthorized(i18n.authorizationRequired) unless request.auth?.credentials
-        isInServerAdmin = fnIsInServerAdmin(request)
+        isInServerAdmin = fnIsInScopeOrRole(request)
         return reply Boom.forbidden("'#{options.serverAdminScopeName}' #{i18n.serverAdminScopeRequired}") unless isInServerAdmin
 
         methodsRoles().get request.params.roleId,  null,  (err,role) ->
@@ -162,7 +164,7 @@ module.exports = (plugin,options = {}) ->
 
         return reply Boom.unauthorized(i18n.authorizationRequired) unless request.auth?.credentials
         
-        isInServerAdmin = fnIsInServerAdmin(request)
+        isInServerAdmin = fnIsInScopeOrRole(request)
 
         methodsRoles().get request.params.roleId,  null,  (err,role) ->
           return reply err if err
