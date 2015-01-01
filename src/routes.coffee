@@ -7,7 +7,7 @@ helperObjToRest = require './helper-obj-to-rest'
 i18n = require './i18n'
 validationSchemas = require './validation-schemas'
 
-module.exports = (plugin,options = {}) ->
+module.exports = (server,options = {}) ->
   Hoek.assert options._tenantId, i18n.optionsAccountIdRequired
   Hoek.assert options.baseUrl,i18n.optionsBaseUrlRequired
   Hoek.assert options.routesBaseName,i18n.optionsRoutesBaseNameRequired
@@ -20,7 +20,7 @@ module.exports = (plugin,options = {}) ->
   Hoek.assert options.descriptionDeleteOne, i18n.optionsDescriptionDeleteOneRequired
   Hoek.assert options.descriptionPatchOne, i18n.optionsDescriptionPatchOneRequired
 
-  hapiUserStoreMultiTenant = -> plugin.plugins['hapi-user-store-multi-tenant']
+  hapiUserStoreMultiTenant = -> server.plugins['hapi-user-store-multi-tenant']
   Hoek.assert hapiUserStoreMultiTenant(),i18n.couldNotFindPlugin
 
   methodsRoles = -> hapiUserStoreMultiTenant().methods.roles
@@ -53,7 +53,7 @@ module.exports = (plugin,options = {}) ->
   fnRolesBaseUrl = ->
     "#{options.baseUrl}/#{options.routesBaseName}"
 
-  plugin.route
+  server.route
     path: "/#{options.routesBaseName}"
     method: "GET"
     config:
@@ -80,7 +80,7 @@ module.exports = (plugin,options = {}) ->
           reply( apiPagination.toRest( rolesResult,baseUrl))
 
   
-  plugin.route
+  server.route
     path: "/#{options.routesBaseName}"
     method: "POST"
     config:
@@ -102,7 +102,7 @@ module.exports = (plugin,options = {}) ->
           reply(helperObjToRest.role(role,baseUrl,isInServerAdmin)).code(201)
 
 
-  plugin.route
+  server.route
     path: "/#{options.routesBaseName}/{roleId}"
     method: "DELETE"
     config:
@@ -123,7 +123,7 @@ module.exports = (plugin,options = {}) ->
           
           reply().code(204)
 
-  plugin.route
+  server.route
     path: "/#{options.routesBaseName}/{roleId}"
     method: "PATCH"
     config:
@@ -150,7 +150,7 @@ module.exports = (plugin,options = {}) ->
             return reply err if err          
             reply(helperObjToRest.role(role,baseUrl,isInServerAdmin)).code(200)
 
-  plugin.route
+  server.route
     path: "/#{options.routesBaseName}/{roleId}"
     method: "GET"
     config:

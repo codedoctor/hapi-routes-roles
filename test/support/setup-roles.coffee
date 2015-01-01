@@ -5,7 +5,7 @@ module.exports = (server,cb) ->
   roles = [fixtures.role1,fixtures.role2,fixtures.roleInternal1]
   delete r.id for r in roles
 
-  methods = server.pack.plugins['hapi-user-store-multi-tenant'].methods
+  methods = server.plugins['hapi-user-store-multi-tenant'].methods
 
   addRole = (roleData,cb) ->
     methods.roles.create fixtures._tenantId,roleData,null, (err,role) ->

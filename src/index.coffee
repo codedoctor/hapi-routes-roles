@@ -34,7 +34,7 @@ When passing a function to the _tenantId the signature needs to be as follows:
 
 ```
 ###
-module.exports.register = (plugin, options = {}, cb) ->
+module.exports.register = (server, options = {}, cb) ->
 
   defaults =
     routesBaseName: 'roles'
@@ -49,9 +49,9 @@ module.exports.register = (plugin, options = {}, cb) ->
 
   options = Hoek.applyToDefaults defaults, options
 
-  routes plugin,options
+  routes server,options
 
-  plugin.expose 'i18n',i18n
+  server.expose 'i18n',i18n
 
   cb()
 
