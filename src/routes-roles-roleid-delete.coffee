@@ -2,7 +2,7 @@ _ = require 'underscore'
 apiPagination = require 'api-pagination'
 Boom = require 'boom'
 Hoek = require "hoek"
-Joi = require 'Joi'
+Joi = require 'joi'
 
 helperObjToRestRole = require './helper-obj-to-rest-role'
 i18n = require './i18n'
