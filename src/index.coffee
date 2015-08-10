@@ -4,7 +4,14 @@
 
 Hoek = require 'hoek'
 i18n = require './i18n'
-routes = require './routes'
+
+routesToExpose = [
+  require './routes-roles-get'
+  require './routes-roles-post'
+  require './routes-roles-roleid-get'
+  require './routes-roles-roleid-patch'
+  require './routes-roles-roleid-delete'
+]
 
 ###
 Main entry point for the plugin
@@ -50,7 +57,7 @@ module.exports.register = (server, options = {}, cb) ->
 
   options = Hoek.applyToDefaults defaults, options
 
-  routes server,options
+  r server,options for r in routesToExpose
 
   server.expose 'i18n',i18n
 

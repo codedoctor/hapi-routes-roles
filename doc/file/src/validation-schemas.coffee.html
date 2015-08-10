@@ -43,31 +43,14 @@
   </dt>
   <dd>
     <pre><code class='coffeescript'>{
-  roleId: roleId,
-  paramsRolesDelete: Joi.object().keys({
-    roleId: roleId.required()
-  }),
-  paramsRolesPatch: Joi.object().keys({
-    roleId: roleId.required()
-  }),
-  paramsRolesGetOne: Joi.object().keys({
-    roleId: roleId.required()
-  }),
-  payloadRolesPatch: Joi.object().keys().options({
-    allowUnknown: true,
-    stripUnknown: false
-  }),
-  payloadRolesPost: Joi.object().keys().options({
-    allowUnknown: true,
-    stripUnknown: false
-  })
+  roleId: roleId
 }</code></pre>
     
   </dd>
 </dl>
     </div>
     <div id='footer'>
-  August 10, 15 05:46:37 by
+  August 10, 15 05:55:11 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>
