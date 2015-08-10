@@ -40,7 +40,8 @@ module.exports.register = (server, options = {}, cb) ->
     routesBaseName: 'roles'
     serverAdminScopeName: 'server-admin'
     adminRolesName : 'admin'
-    tags: ['identity','roles']
+    routeTagsPublic: ['api','api-public','roles']
+    routeTagsAdmin: ['api','api-admin','roles']
     descriptionGetAll: i18n.descriptionGetAll
     descriptionPost: i18n.descriptionPost
     descriptionGetOne: i18n.descriptionGetOne

@@ -1,8 +1,6 @@
 _ = require 'underscore'
 
-module.exports =
-
-  role: (role,baseUrl,isInAdminScope) ->
+module.exports = (role,baseUrl,isInAdminScope) ->
     return null unless role
 
     res = 

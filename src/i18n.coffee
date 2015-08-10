@@ -10,7 +10,7 @@ module.exports =
   optionsBaseUrlRequired: "options parameter requires a 'baseUrl' (http://api.mysite.com , http://localhost:4321)"
   optionsRoutesBaseNameRequired: "options parameter requires a 'routesBaseName' (roles)"
   optionsServerAdminScopeNameRequired: "options parameter requires a 'serverAdminScopeName' (server-admin)"
-  optionsTagsRequiredAndArray: "options parameter requires a 'tag' field that is an array."
+  optionsRouteTagsPublicRequiredAndArray: "options parameter requires a 'routesTagsPublic' field that is an array."
   optionsDescriptionGetAllRequired: "options parameter requires a 'descriptionGetAll' field."
   optionsDescriptionPostRequired: "options parameter requires a 'descriptionPost' field."
   optionsDescriptionGetOneRequired: "options parameter requires a 'descriptionGetOne' field."

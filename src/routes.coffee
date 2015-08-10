@@ -3,7 +3,7 @@ apiPagination = require 'api-pagination'
 Boom = require 'boom'
 Hoek = require "hoek"
 
-helperObjToRest = require './helper-obj-to-rest'
+helperObjToRestRole = require './helper-obj-to-rest-role'
 i18n = require './i18n'
 validationSchemas = require './validation-schemas'
 
@@ -12,7 +12,7 @@ module.exports = (server,options = {}) ->
   Hoek.assert options.baseUrl,i18n.optionsBaseUrlRequired
   Hoek.assert options.routesBaseName,i18n.optionsRoutesBaseNameRequired
   Hoek.assert options.serverAdminScopeName,i18n.optionsServerAdminScopeNameRequired
-  Hoek.assert options.tags && _.isArray(options.tags),i18n.optionsTagsRequiredAndArray
+  Hoek.assert options.routeTagsPublic && _.isArray(options.routeTagsPublic),i18n.optionsRouteTagsPublicRequiredAndArray
 
   Hoek.assert options.descriptionGetAll, i18n.optionsDescriptionGetAllRequired
   Hoek.assert options.descriptionPost, i18n.optionsDescriptionPostRequired
@@ -25,9 +25,6 @@ module.exports = (server,options = {}) ->
 
   methodsRoles = -> hapiUserStoreMultiTenant().methods.roles
   Hoek.assert methodsRoles(),i18n.couldNotFindMethodsRoles
-
-  fnRaise404 = (request,reply) ->
-    reply Boom.notFound("#{i18n.notFoundPrefix} #{options.baseUrl}#{request.path}")
 
   ###
   Returns the _tenantId to use.
@@ -58,7 +55,7 @@ module.exports = (server,options = {}) ->
     method: "GET"
     config:
       description: options.descriptionGetAll
-      tags: options.tags
+      tags: options.routeTagsPublic
     handler: (request, reply) ->
       fnAccountId request, (err,_tenantId) ->
         return reply err if err
@@ -75,7 +72,7 @@ module.exports = (server,options = {}) ->
 
           baseUrl = fnRolesBaseUrl()
 
-          rolesResult.items = _.map(rolesResult.items, (x) -> helperObjToRest.role(x,baseUrl,isInServerAdmin) )   
+          rolesResult.items = _.map(rolesResult.items, (x) -> helperObjToRestRole(x,baseUrl,isInServerAdmin) )   
 
           reply( apiPagination.toRest( rolesResult,baseUrl))
 
@@ -85,7 +82,7 @@ module.exports = (server,options = {}) ->
     method: "POST"
     config:
       description: options.descriptionPost
-      tags: options.tags
+      tags: options.routeTagsPublic
       validate:
         payload: validationSchemas.payloadRolesPost
     handler: (request, reply) ->
@@ -99,7 +96,7 @@ module.exports = (server,options = {}) ->
           return reply err if err
 
           baseUrl = fnRolesBaseUrl()
-          reply(helperObjToRest.role(role,baseUrl,isInServerAdmin)).code(201)
+          reply(helperObjToRestRole(role,baseUrl,isInServerAdmin)).code(201)
 
 
   server.route
@@ -107,7 +104,7 @@ module.exports = (server,options = {}) ->
     method: "DELETE"
     config:
       description: options.descriptionDeleteOne
-      tags: options.tags
+      tags: options.routeTagsPublic
       validate:
         params: validationSchemas.paramsRolesDelete
     handler: (request, reply) ->
@@ -128,7 +125,7 @@ module.exports = (server,options = {}) ->
     method: "PATCH"
     config:
       description: options.descriptionPatchOne
-      tags: options.tags
+      tags: options.routeTagsPublic
       validate:
         params: validationSchemas.paramsRolesPatch
         payload: validationSchemas.payloadRolesPatch
@@ -148,14 +145,14 @@ module.exports = (server,options = {}) ->
 
           methodsRoles().patch request.params.roleId, request.payload, null,  (err,role) ->
             return reply err if err          
-            reply(helperObjToRest.role(role,baseUrl,isInServerAdmin)).code(200)
+            reply(helperObjToRestRole(role,baseUrl,isInServerAdmin)).code(200)
 
   server.route
     path: "/#{options.routesBaseName}/{roleId}"
     method: "GET"
     config:
       description: options.descriptionGetOne
-      tags: options.tags
+      tags: options.routeTagsPublic
       validate:
         params: validationSchemas.paramsRolesGetOne
     handler: (request, reply) ->
@@ -171,5 +168,5 @@ module.exports = (server,options = {}) ->
           return reply Boom.notFound(request.url) unless role
 
           baseUrl = fnRolesBaseUrl()
-          reply(helperObjToRest.role(role,baseUrl,isInServerAdmin)).code(200)
+          reply(helperObjToRestRole(role,baseUrl,isInServerAdmin)).code(200)
 

@@ -21,13 +21,13 @@
     &raquo;
     <span class='title'>src</span>
     &raquo;
-    <span class='title'>helper-obj-to-rest.coffee</span>
+    <span class='title'>helper-obj-to-rest-role.coffee</span>
   </div>
 </div>
     <div id='content'>
       <h1>
         File:
-        helper-obj-to-rest.coffee
+        helper-obj-to-rest-role.coffee
       </h1>
       <table class='box'>
         <tr>
@@ -35,38 +35,9 @@
           <td>src</td>
         </tr>
       </table>
-      <h2>Variables Summary</h2>
-      <dl class='constants'>
-  <dt id='module.exports-variable'>
-    module.exports
-    =
-  </dt>
-  <dd>
-    <pre><code class='coffeescript'>{
-  role: function(role, baseUrl, isInAdminScope) {
-    var res;
-    if (!role) {
-      return null;
-    }
-    res = {
-      _url: baseUrl + &quot;&#47;&quot; + role._id,
-      id: role._id,
-      name: role.name,
-      description: role.description
-    };
-    if (isInAdminScope) {
-      res._tenantId = role._tenantId;
-      res.isInternal = role.isInternal;
-    }
-    return res;
-  }
-}</code></pre>
-    
-  </dd>
-</dl>
     </div>
     <div id='footer'>
-  August 10, 15 05:22:09 by
+  August 10, 15 05:46:37 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

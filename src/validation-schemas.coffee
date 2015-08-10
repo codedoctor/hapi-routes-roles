@@ -19,8 +19,8 @@ module.exports =
       roleId: roleId.required() 
     )
 
-  payloadRolesPatch: Joi.object().keys().options({ allowUnkown: true, stripUnknown: false }) 
-  payloadRolesPost: Joi.object().keys().options({ allowUnkown: true, stripUnknown: false })
+  payloadRolesPatch: Joi.object().keys().options({ allowUnknown: true, stripUnknown: false }) 
+  payloadRolesPost: Joi.object().keys().options({ allowUnknown: true, stripUnknown: false })
 
 ###
 .keys(
